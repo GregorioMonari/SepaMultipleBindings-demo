@@ -35,7 +35,8 @@ then run your query and see the results!
 The only constraint is that the Array Bindings MUST have the same size.
 
 ## HOW TO RUN THIS DEMO
-To run the test, simply clone this repository, open your terminal and cd into the root directory, then run the following command:
+To run the test, clone this repository, open your terminal and cd into the root directory.
+Modify the jsap parameters located in Apps/test-jsap.js, then run the following command:
 <pre>node runPacApp testClient</pre>
 After running the command, the application will run four different queries (single bindings, multiple bindings, mixed bindings and a My2sec example query) and diplay query results in tabular form. 
 You should see someting similar to this on your terminal:
