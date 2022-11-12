@@ -3,7 +3,6 @@ require("./test-jsap.js")
 
 class testClient extends PacFactory{
 
-    //============= CLASS CONSTRUCTOR ==============
     constructor(){
       //TITLE
       console.log("║║ ###########################");
@@ -13,26 +12,44 @@ class testClient extends PacFactory{
       this.testGraph="";
     }
 
+    //============= START METHOD, CALL TO START THE APP ==========
     async start(){
-
         this.setTestGraph("multiple_bindings");
         await this.clearTestGraph();
         await this.logTestGraph();
         console.log("--------START TEST-------")
 
-        //TEST QUERY
-        const test_data={
-            graph: "http://www.vaimee.it/testing/multiple_bindings",
-            value:["mao","maus","maoribus"],
-            color:["red","green","blue"]
+        //-----------------SINGLE BINDINGS--------------------
+        const singleBindings={
+            o:"example"
         }
-        var results = await this.MULTBIND2(test_data);
+        var results = await this.BINDINGS_TEST(singleBindings);
+        console.log("SEPA UPDATED, RES: "+JSON.stringify(results));
+        await this.logTestGraph()
+        await this.clearTestGraph()
+
+        //-----------------MULTIPLE BINDINGS------------------
+        const multipleBindings={
+            o: ["example_1","example_2","example_3"]
+        }
+        var results = await this.BINDINGS_TEST(multipleBindings);
+        console.log("SEPA UPDATED, RES: "+JSON.stringify(results));
+        await this.logTestGraph()
+        await this.clearTestGraph()
+
+        //-----------------MIXED BINDINGS (SINGLE AND MULTIPLE)------------------
+        const mixedBindings={
+            graph: "http://www.vaimee.it/testing/multiple_bindings",
+            value: ["example_1","example_2","example_3"],
+            color: ["red","green","blue"]
+        }
+        var results = await this.MIXED_BINDINGS(mixedBindings);
         console.log("SEPA UPDATED, RES: "+JSON.stringify(results));
         await this.logTestGraph()
         await this.clearTestGraph()
 
 
-        //TEST ADD EVENTS
+        //----------------MY2SEC ADD ACTIVITY WATCH EVENTS TEST--------------------
         const data={
             usergraph: "http://www.vaimee.it/testing/multiple_bindings",
             event_type:"sw:windowEvent",
@@ -48,48 +65,13 @@ class testClient extends PacFactory{
         await this.logTestGraph()
         await this.clearTestGraph()
 
-
         console.log("---------END TEST--------")
-        /*
-            .then(res=>{
-                console.log("SEPA UPDATED, RES: "+JSON.stringify(res));
-                this.logTestGraph()
-                    .then(()=>{
-                        this.clearTestGraph()
-                    })
-            })
-        */
-
-        /*
-        var res=await this.rawUpdate(`
-            INSERT DATA{
-                GRAPH <http://www.vaimee.it/testing/multiple_bindings>{
-                    _:nodino <http://sepatest/hasValue> "mao" .
-                    _:nodone <http://sepatest/hasNotValue> "maus" .
-                }
-            }
-        `)
-        console.log(res)
-        await this.logTestGraph();
-        */
-        
-        //await this.clearTestGraph();
-        /*
-        const forced_bindings={
-            p: ["http://sepatest/hasValue","http://sepatest/hasNotValue"],
-            o: ["mao","maus"]
-        }
-        let sub= this.VALUES_TEST(forced_bindings);
-        sub.on("notification",not=>{
-            console.log("\n\n# QueryResults")
-            console.log(not.addedResults.results.bindings)
-            console.log("---------END TEST--------")
-            this.clearTestGraph();
-        })
-        */
-
     }
 
+
+
+
+    //============================================== UTILITY FUNCTIONS ======================================================
     setTestGraph(name){
         this.testingGraphName=name;
     }
@@ -119,37 +101,3 @@ class testClient extends PacFactory{
 }
 
 module.exports = testClient;
-
-/*
-const forced_bindings={
-    name: "Greg",
-    age: 23
-}
-*/
-
-/*
-  //=========== TESTING API ==============
-  setTestGraph(name){
-    this.testingGraphName=name;
-  }
-  async createTestGraph(){
-    await this.rawUpdate("CREATE GRAPH <http://www.vaimee.it/testing/"+this.testingGraphName+">");
-    this.log.info("Created Graph: <http://www.vaimee.it/testing/"+this.testingGraphName+">");
-  }
-  async dropTestGraph(){
-    await this.rawUpdate("CREATE GRAPH <http://www.vaimee.it/testing/"+this.testingGraphName+">");
-    this.log.info("Dropped Graph: <http://www.vaimee.it/testing/"+this.testingGraphName+">");
-  }
-  async clearTestGraph(){
-    await this.rawUpdate("DELETE {?s ?p ?o} WHERE {GRAPH <http://www.vaimee.it/testing/"+this.testingGraphName+"> {?s ?p ?o} }");
-    this.log.info("Cleared Graph: <http://www.vaimee.it/testing/"+this.testingGraphName+">");
-  }
-  async logTestGraph(){
-    var queryRes=await this.rawQuery('select * where {graph <http://www.vaimee.it/testing/'+this.testingGraphName+'> {?s ?p ?o} }');
-    this.log.info("Queried Graph <http://www.vaimee.it/testing/"+this.testingGraphName+">, showing results: ");
-    var bindings=this.extractResultsBindings(queryRes);
-    console.table(bindings)
-  }
-  */
-
-

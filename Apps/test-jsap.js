@@ -53,20 +53,16 @@ jsappe={
 		
 	},
 	"updates": {
-        "MULTIPLE_BINDINGS":{
-			"sparql":"INSERT DATA{ GRAPH ?graph {_:bnode <http://sepatest/hasValue> ?o}}",
+        "BINDINGS_TEST":{
+			"sparql":"INSERT DATA{ GRAPH <http://www.vaimee.it/testing/multiple_bindings> {_:bnode <http://sepatest/hasValue> ?o}}",
 			"forcedBindings": {
-				"graph": {
-					"type": "uri",
-					"value": "<http://www.vaimee.it/testing/multiple_bindings>"					
-				},
 				"o": {
 					"type": "literal",
-					"value": "mao"
+					"value": "example"
 				}
 			}	            
         },
-		"MULTBIND2":{
+		"MIXED_BINDINGS":{
 			"sparql":"INSERT DATA{ GRAPH ?graph {_:bnode <http://sepatest/hasValue> ?value ; <http://sepatest/hasColor> ?color }}",
 			"forcedBindings": {
 				"graph": {
